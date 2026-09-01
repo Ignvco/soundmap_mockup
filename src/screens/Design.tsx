@@ -13,51 +13,175 @@ const TABS: { id: DesignTab; label: string }[] = [
 /* ── Room ── */
 function RoomViz() {
   return (
-    <svg width="100%" height="100%" viewBox="0 0 520 340" preserveAspectRatio="xMidYMid meet">
+    <svg width="100%" height="100%" viewBox="0 0 620 420" preserveAspectRatio="xMidYMid meet">
       <defs>
-        <linearGradient id="room-grad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#1a1a1a"/>
-          <stop offset="100%" stopColor="#0d0d0d"/>
+        <linearGradient id="room-back" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#191919"/>
+          <stop offset="100%" stopColor="#0e0e0e"/>
         </linearGradient>
+        <linearGradient id="room-left" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#0e0e0e"/>
+          <stop offset="100%" stopColor="#161616"/>
+        </linearGradient>
+        <linearGradient id="room-right" x1="1" y1="0" x2="0" y2="0">
+          <stop offset="0%" stopColor="#0e0e0e"/>
+          <stop offset="100%" stopColor="#161616"/>
+        </linearGradient>
+        <linearGradient id="room-ceil" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="#141414"/>
+          <stop offset="100%" stopColor="#0b0b0b"/>
+        </linearGradient>
+        <linearGradient id="room-floor" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#101010"/>
+          <stop offset="100%" stopColor="#080808"/>
+        </linearGradient>
+        <linearGradient id="stage-top" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#222"/>
+          <stop offset="100%" stopColor="#181818"/>
+        </linearGradient>
+        <radialGradient id="room-ambient" cx="50%" cy="20%" r="80%">
+          <stop offset="0%" stopColor="#C9F03E" stopOpacity="0.06"/>
+          <stop offset="100%" stopColor="#C9F03E" stopOpacity="0"/>
+        </radialGradient>
+        <radialGradient id="stage-light-r" cx="50%" cy="0%" r="90%">
+          <stop offset="0%" stopColor="#C9F03E" stopOpacity="0.14"/>
+          <stop offset="100%" stopColor="#C9F03E" stopOpacity="0"/>
+        </radialGradient>
       </defs>
 
-      {/* Back wall */}
-      <path d="M100 60 L420 60 L500 120 L500 280 L420 320 L100 320 L20 280 L20 120 Z" fill="url(#room-grad)" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+      {/* Back wall — main face */}
+      <path d="M 120 70 L 500 70 L 500 350 L 120 350 Z" fill="url(#room-back)" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
 
-      {/* Floor */}
-      <path d="M60 290 L460 290 L500 280 L500 290 L460 320 L60 320 L20 280 L20 290 Z" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8"/>
-
-      {/* Ceiling lines (depth) */}
-      <path d="M100 60 L260 20 L420 60" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8"/>
-      <path d="M20 120 L260 20" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="0.8" strokeDasharray="4 4"/>
-      <path d="M500 120 L260 20" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="0.8" strokeDasharray="4 4"/>
-
-      {/* Seating rake lines */}
-      {[0,1,2,3,4,5,6].map(i => (
-        <path key={i} d={`M${80+i*12} ${190+i*14} L${440-i*12} ${190+i*14}`} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="0.8"/>
+      {/* Back wall grid */}
+      {[0,1,2,3].map(i => (
+        <line key={`bv${i}`} x1={188+i*104} y1="70" x2={188+i*104} y2="350" stroke="rgba(255,255,255,0.025)" strokeWidth="0.6"/>
+      ))}
+      {[0,1,2,3].map(i => (
+        <line key={`bh${i}`} x1="120" y1={140+i*70} x2="500" y2={140+i*70} stroke="rgba(255,255,255,0.025)" strokeWidth="0.6"/>
       ))}
 
-      {/* Stage */}
-      <rect x="160" y="62" width="200" height="36" rx="2" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
-      <text x="260" y="84" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="10" fontFamily="Geist Mono">STAGE</text>
+      {/* Left wall */}
+      <path d="M 30 130 L 120 70 L 120 350 L 30 410 Z" fill="url(#room-left)" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
+      {[0,1,2].map(i=>(
+        <line key={`lwv${i}`} x1={55+i*22} y1={130-i*10} x2={55+i*22} y2={410-i*10} stroke="rgba(255,255,255,0.02)" strokeWidth="0.5"/>
+      ))}
 
-      {/* Speaker arrays - left */}
-      <rect x="78" y="96" width="18" height="32" rx="2" fill="var(--elevated)" stroke="var(--accent)" strokeWidth="1"/>
-      <rect x="78" y="132" width="18" height="22" rx="2" fill="var(--elevated)" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
-      {/* Speaker arrays - right */}
-      <rect x="424" y="96" width="18" height="32" rx="2" fill="var(--elevated)" stroke="var(--accent)" strokeWidth="1"/>
-      <rect x="424" y="132" width="18" height="22" rx="2" fill="var(--elevated)" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
+      {/* Right wall */}
+      <path d="M 500 70 L 590 130 L 590 410 L 500 350 Z" fill="url(#room-right)" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
 
-      {/* Dimensions */}
-      {/* Width */}
-      <line x1="40" y1="320" x2="480" y2="320" stroke="rgba(255,255,255,0.12)" strokeWidth="0.8"/>
-      <line x1="40" y1="315" x2="40" y2="325" stroke="rgba(255,255,255,0.12)" strokeWidth="0.8"/>
-      <line x1="480" y1="315" x2="480" y2="325" stroke="rgba(255,255,255,0.12)" strokeWidth="0.8"/>
-      <text x="260" y="336" textAnchor="middle" fill="var(--text-muted)" fontSize="9" fontFamily="Geist Mono">18.2 m</text>
+      {/* Ceiling */}
+      <path d="M 30 130 L 590 130 L 500 70 L 120 70 Z" fill="url(#room-ceil)" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+      {/* Ceiling grid */}
+      {[0,1,2,3,4].map(i=>(
+        <path key={`cg${i}`} d={`M ${150+i*80} 70 L ${88+i*100} 130`} stroke="rgba(255,255,255,0.025)" strokeWidth="0.5"/>
+      ))}
+      {/* Ceiling ambient */}
+      <path d="M 30 130 L 590 130 L 500 70 L 120 70 Z" fill="url(#room-ambient)"/>
 
-      {/* Height indicator */}
-      <line x1="508" y1="60" x2="508" y2="280" stroke="rgba(255,255,255,0.12)" strokeWidth="0.8"/>
-      <text x="514" y="175" fill="var(--text-muted)" fontSize="9" fontFamily="Geist Mono">11.8 m</text>
+      {/* Truss / rigging bar under ceiling */}
+      <path d="M 120 128 L 500 128 L 500 134 L 120 134 Z" fill="#1c1c1c" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+      {[168,240,310,380,452].map(x=>(
+        <line key={x} x1={x} y1="120" x2={x} y2="128" stroke="rgba(255,255,255,0.1)" strokeWidth="0.7" strokeDasharray="2 2"/>
+      ))}
+
+      {/* Floor */}
+      <path d="M 30 410 L 590 410 L 500 350 L 120 350 Z" fill="url(#room-floor)" stroke="rgba(255,255,255,0.035)" strokeWidth="1"/>
+      {[0,1,2,3].map(i=>(
+        <path key={i} d={`M ${80+i*120} 350 L ${52+i*142} 410`} stroke="rgba(255,255,255,0.02)" strokeWidth="0.5"/>
+      ))}
+
+      {/* Stage platform */}
+      <path d="M 195 250 L 425 250 L 425 348 L 195 348 Z" fill="url(#stage-top)" stroke="rgba(255,255,255,0.07)" strokeWidth="1"/>
+      <path d="M 175 266 L 195 250 L 425 250 L 445 266 L 445 350 L 175 350 Z" fill="#181818" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
+      <path d="M 130 282 L 175 266 L 175 350 L 130 366 Z" fill="#141414" stroke="rgba(255,255,255,0.04)" strokeWidth="0.7"/>
+      <path d="M 175 266 L 195 250 L 425 250 L 445 266 Z" fill="#1e1e1e" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+      <text x="310" y="300" textAnchor="middle" fill="rgba(255,255,255,0.1)" fontSize="10" fontFamily="Geist Mono" letterSpacing="4">STAGE</text>
+
+      {/* Stage lighting wash */}
+      <path d="M 195 250 L 425 250 L 425 348 L 195 348 Z" fill="url(#stage-light-r)"/>
+
+      {/* Spotlights from ceiling */}
+      {[240,310,380].map((x,i)=>(
+        <g key={i} opacity="0.4">
+          <path d={`M ${x-5} 128 L ${x+5} 128 L ${x+22} 250 L ${x-22} 250 Z`} fill="rgba(255,240,100,0.07)"/>
+        </g>
+      ))}
+
+      {/* Monitor wedges on stage */}
+      {[240,295,340,385].map((x,i)=>(
+        <path key={i} d={`M ${x-10} 250 L ${x+10} 250 L ${x+7} 262 L ${x-7} 262 Z`} fill="#1e1e1e" stroke="rgba(255,255,255,0.12)" strokeWidth="0.8"/>
+      ))}
+
+      {/* Seating rows - raked */}
+      <g opacity="0.85">
+        {[0,1,2,3,4,5,6,7].map(i=>(
+          <g key={i}>
+            {[-5,-4,-3,-2,-1,0,1,2,3,4,5].map(col=>{
+              const rowX = 308 + col*(32+i*1.5);
+              const rowY = 220 + i*12;
+              if(rowX<40||rowX>570) return null;
+              return <rect key={col} x={rowX-10} y={rowY} width="14" height="6" rx="1" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.035)" strokeWidth="0.4"/>;
+            })}
+          </g>
+        ))}
+      </g>
+
+      {/* Balcony railing */}
+      <path d="M 70 190 L 550 190" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1.2" strokeDasharray="6 4"/>
+      <text x="78" y="185" fill="rgba(255,255,255,0.18)" fontSize="7.5" fontFamily="Geist Mono">BALCONY</text>
+
+      {/* Balcony seating row */}
+      {[-5,-4,-3,-2,-1,0,1,2,3,4,5].map(col=>(
+        <rect key={col} x={308+col*38-10} y="194" width="20" height="7" rx="1.5" fill="rgba(255,255,255,0.055)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.4"/>
+      ))}
+
+      {/* LEFT speaker array */}
+      <g>
+        <path d="M 120 138 L 150 134 L 150 192 L 120 196 Z" fill="#1a1a1a" stroke="#C9F03E" strokeWidth="1.2"/>
+        {[0,1,2,3,4].map(i=>(
+          <rect key={i} x="124" y={140+i*9} width="22" height="7" rx="1.5" fill="#C9F03E" opacity={0.5-i*0.07}/>
+        ))}
+        <path d="M 150 134 L 162 138 L 162 195 L 150 192 Z" fill="#141414" stroke="rgba(255,255,255,0.06)" strokeWidth="0.6"/>
+        <text x="135" y="207" textAnchor="middle" fill="#C9F03E" fontSize="8" fontFamily="Geist Mono">TOP L</text>
+        {/* Coverage line */}
+        <path d="M 150 165 L 420 320 L 300 358 L 95 280 L 90 200 Z" fill="rgba(201,240,62,0.05)" stroke="rgba(201,240,62,0.09)" strokeWidth="0.7"/>
+        {/* Sub box */}
+        <path d="M 120 198 L 150 194 L 150 222 L 120 226 Z" fill="#1a1a1a" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <text x="135" y="236" textAnchor="middle" fill="rgba(255,255,255,0.28)" fontSize="7.5" fontFamily="Geist Mono">SUB L</text>
+        <line x1="135" y1="128" x2="135" y2="138" stroke="rgba(255,255,255,0.15)" strokeWidth="0.8" strokeDasharray="2 2"/>
+      </g>
+
+      {/* RIGHT speaker array */}
+      <g>
+        <path d="M 470 134 L 500 138 L 500 196 L 470 192 Z" fill="#1a1a1a" stroke="#C9F03E" strokeWidth="1.2"/>
+        {[0,1,2,3,4].map(i=>(
+          <rect key={i} x="474" y={140+i*9} width="22" height="7" rx="1.5" fill="#C9F03E" opacity={0.5-i*0.07}/>
+        ))}
+        <path d="M 458 138 L 470 134 L 470 192 L 458 195 Z" fill="#141414" stroke="rgba(255,255,255,0.06)" strokeWidth="0.6"/>
+        <text x="485" y="207" textAnchor="middle" fill="#C9F03E" fontSize="8" fontFamily="Geist Mono">TOP R</text>
+        <path d="M 470 165 L 200 320 L 320 358 L 525 280 L 530 200 Z" fill="rgba(201,240,62,0.05)" stroke="rgba(201,240,62,0.09)" strokeWidth="0.7"/>
+        <path d="M 470 194 L 500 198 L 500 226 L 470 222 Z" fill="#1a1a1a" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <text x="485" y="236" textAnchor="middle" fill="rgba(255,255,255,0.28)" fontSize="7.5" fontFamily="Geist Mono">SUB R</text>
+        <line x1="485" y1="128" x2="485" y2="138" stroke="rgba(255,255,255,0.15)" strokeWidth="0.8" strokeDasharray="2 2"/>
+      </g>
+
+      {/* Fill speakers on balcony */}
+      <rect x="120" y="194" width="12" height="22" rx="2" fill="#141414" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+      <rect x="488" y="194" width="12" height="22" rx="2" fill="#141414" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+
+      {/* Dimension lines */}
+      <line x1="40" y1="358" x2="590" y2="358" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+      <line x1="40" y1="353" x2="40" y2="363" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+      <line x1="590" y1="353" x2="590" y2="363" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+      <text x="310" y="375" textAnchor="middle" fill="var(--text-muted)" fontSize="8.5" fontFamily="Geist Mono">24.6 m</text>
+
+      <line x1="598" y1="70" x2="598" y2="350" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+      <line x1="593" y1="70" x2="603" y2="70" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+      <line x1="593" y1="350" x2="603" y2="350" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+      <text x="610" y="215" fill="var(--text-muted)" fontSize="8.5" fontFamily="Geist Mono">11.8 m</text>
+
+      <line x1="120" y1="386" x2="500" y2="386" stroke="rgba(255,255,255,0.08)" strokeWidth="0.7" strokeDasharray="4 4"/>
+      <text x="310" y="398" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="8" fontFamily="Geist Mono">18.2 m (width)</text>
     </svg>
   );
 }
@@ -124,60 +248,130 @@ function RoomScreen() {
 /* ── PA ── */
 function PAviz() {
   return (
-    <svg width="100%" height="100%" viewBox="0 0 460 320" preserveAspectRatio="xMidYMid meet">
+    <svg width="100%" height="100%" viewBox="0 0 560 400" preserveAspectRatio="xMidYMid meet">
       <defs>
-        <radialGradient id="pa-coverage-l" cx="30%" cy="40%" r="60%">
-          <stop offset="0%" stopColor="#C9F03E" stopOpacity="0.25"/>
-          <stop offset="100%" stopColor="#C9F03E" stopOpacity="0"/>
+        <radialGradient id="pa-l" cx="17%" cy="28%" r="75%" fx="17%" fy="22%">
+          <stop offset="0%"   stopColor="#C9F03E" stopOpacity="0.85"/>
+          <stop offset="20%"  stopColor="#8BC34A" stopOpacity="0.65"/>
+          <stop offset="45%"  stopColor="#4CAF50" stopOpacity="0.40"/>
+          <stop offset="72%"  stopColor="#2E7D32" stopOpacity="0.15"/>
+          <stop offset="100%" stopColor="#1B5E20" stopOpacity="0"/>
         </radialGradient>
-        <radialGradient id="pa-coverage-r" cx="70%" cy="40%" r="60%">
-          <stop offset="0%" stopColor="#C9F03E" stopOpacity="0.25"/>
-          <stop offset="100%" stopColor="#C9F03E" stopOpacity="0"/>
+        <radialGradient id="pa-r" cx="83%" cy="28%" r="75%" fx="83%" fy="22%">
+          <stop offset="0%"   stopColor="#C9F03E" stopOpacity="0.85"/>
+          <stop offset="20%"  stopColor="#8BC34A" stopOpacity="0.65"/>
+          <stop offset="45%"  stopColor="#4CAF50" stopOpacity="0.40"/>
+          <stop offset="72%"  stopColor="#2E7D32" stopOpacity="0.15"/>
+          <stop offset="100%" stopColor="#1B5E20" stopOpacity="0"/>
         </radialGradient>
+        <radialGradient id="pa-sub" cx="50%" cy="20%" r="60%">
+          <stop offset="0%"   stopColor="#8BC34A" stopOpacity="0.45"/>
+          <stop offset="50%"  stopColor="#4CAF50" stopOpacity="0.20"/>
+          <stop offset="100%" stopColor="#2E7D32" stopOpacity="0"/>
+        </radialGradient>
+        <clipPath id="pa-clip">
+          <rect x="28" y="18" width="504" height="360" rx="4"/>
+        </clipPath>
       </defs>
 
       {/* Room outline */}
-      <rect x="30" y="20" width="400" height="280" rx="4" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
+      <rect x="28" y="18" width="504" height="360" rx="4" fill="#080d08" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
+
+      {/* Grid */}
+      {Array.from({length:7},(_,i)=>(
+        <line key={`v${i}`} x1={72+i*68} y1="18" x2={72+i*68} y2="378" stroke="rgba(255,255,255,0.025)" strokeWidth="0.6"/>
+      ))}
+      {Array.from({length:5},(_,i)=>(
+        <line key={`h${i}`} x1="28" y1={72+i*68} x2="532" y2={72+i*68} stroke="rgba(255,255,255,0.025)" strokeWidth="0.6"/>
+      ))}
+
+      {/* Coverage */}
+      <rect x="28" y="18" width="504" height="360" fill="url(#pa-l)"   clipPath="url(#pa-clip)"/>
+      <rect x="28" y="18" width="504" height="360" fill="url(#pa-r)"   clipPath="url(#pa-clip)"/>
+      <rect x="28" y="18" width="504" height="360" fill="url(#pa-sub)" clipPath="url(#pa-clip)"/>
+
+      {/* Isocurves */}
+      <g clipPath="url(#pa-clip)">
+        <ellipse cx="280" cy="220" rx="50"  ry="40"  fill="none" stroke="#C9F03E" strokeWidth="0.7" strokeOpacity="0.6"/>
+        <ellipse cx="280" cy="230" rx="105" ry="80"  fill="none" stroke="#9DC94E" strokeWidth="0.55" strokeOpacity="0.4" strokeDasharray="4 3"/>
+        <ellipse cx="280" cy="242" rx="170" ry="125" fill="none" stroke="#5DB84E" strokeWidth="0.55" strokeOpacity="0.35" strokeDasharray="4 3"/>
+        <ellipse cx="280" cy="255" rx="238" ry="168" fill="none" stroke="#3E9142" strokeWidth="0.5" strokeOpacity="0.3"  strokeDasharray="5 4"/>
+      </g>
 
       {/* Stage */}
-      <rect x="150" y="22" width="160" height="30" rx="2" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
-      <text x="230" y="41" textAnchor="middle" fill="rgba(255,255,255,0.15)" fontSize="9" fontFamily="Geist Mono">STAGE</text>
+      <rect x="172" y="20" width="216" height="44" rx="2" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.09)" strokeWidth="1"/>
+      <text x="280" y="46" textAnchor="middle" fill="rgba(255,255,255,0.15)" fontSize="9" fontFamily="Geist Mono" letterSpacing="2">STAGE</text>
 
-      {/* Coverage zones */}
-      <ellipse cx="145" cy="180" rx="120" ry="130" fill="url(#pa-coverage-l)"/>
-      <ellipse cx="315" cy="180" rx="120" ry="130" fill="url(#pa-coverage-r)"/>
-
-      {/* TOP L */}
+      {/* TOP L — detailed array box */}
       <g>
-        <rect x="60" y="52" width="24" height="42" rx="3" fill="#1a1a1a" stroke="var(--accent)" strokeWidth="1.2"/>
-        {[0,1,2].map(i => <circle key={i} cx="72" cy={62 + i * 12} r="3" fill="var(--accent)" opacity="0.5"/>)}
-        <text x="72" y="106" textAnchor="middle" fill="var(--accent)" fontSize="8" fontFamily="Geist Mono">TOP L</text>
+        <rect x="62" y="64" width="26" height="60" rx="3" fill="#1a1a1a" stroke="#C9F03E" strokeWidth="1.4"/>
+        {[0,1,2,3,4,5].map(i=>(
+          <rect key={i} x="66" y={69+i*8} width="18" height="5.5" rx="1.5" fill="#C9F03E" opacity={0.55-i*0.06}/>
+        ))}
+        <path d="M 88 64 L 96 68 L 96 126 L 88 124 Z" fill="#141414" stroke="rgba(255,255,255,0.06)" strokeWidth="0.6"/>
+        {/* Coverage triangle */}
+        <path d="M 88 94 L 400 330 L 270 378 L 38 310 L 32 200 Z" fill="rgba(201,240,62,0.05)" stroke="rgba(201,240,62,0.09)" strokeWidth="0.7"/>
+        <text x="75" y="136" textAnchor="middle" fill="#C9F03E" fontSize="8.5" fontFamily="Geist Mono" fontWeight="600">TOP L</text>
+        <text x="75" y="147" textAnchor="middle" fill="rgba(201,240,62,0.4)" fontSize="7" fontFamily="Geist Mono">6× Y12</text>
+        {/* Sub L */}
+        <rect x="64" y="128" width="24" height="36" rx="3" fill="#1a1a1a" stroke="rgba(255,255,255,0.14)" strokeWidth="1"/>
+        {[0,1,2].map(i=>(
+          <rect key={i} x="67" y={131+i*9} width="18" height="7" rx="1" fill="#111" stroke="rgba(255,255,255,0.06)" strokeWidth="0.4"/>
+        ))}
+        <text x="76" y="175" textAnchor="middle" fill="var(--text-muted)" fontSize="7.5" fontFamily="Geist Mono">SUB L</text>
       </g>
+
       {/* TOP R */}
       <g>
-        <rect x="376" y="52" width="24" height="42" rx="3" fill="#1a1a1a" stroke="var(--accent)" strokeWidth="1.2"/>
-        {[0,1,2].map(i => <circle key={i} cx="388" cy={62 + i * 12} r="3" fill="var(--accent)" opacity="0.5"/>)}
-        <text x="388" y="106" textAnchor="middle" fill="var(--accent)" fontSize="8" fontFamily="Geist Mono">TOP R</text>
+        <rect x="472" y="64" width="26" height="60" rx="3" fill="#1a1a1a" stroke="#C9F03E" strokeWidth="1.4"/>
+        {[0,1,2,3,4,5].map(i=>(
+          <rect key={i} x="476" y={69+i*8} width="18" height="5.5" rx="1.5" fill="#C9F03E" opacity={0.55-i*0.06}/>
+        ))}
+        <path d="M 464 68 L 472 64 L 472 124 L 464 126 Z" fill="#141414" stroke="rgba(255,255,255,0.06)" strokeWidth="0.6"/>
+        <path d="M 472 94 L 160 330 L 290 378 L 522 310 L 528 200 Z" fill="rgba(201,240,62,0.05)" stroke="rgba(201,240,62,0.09)" strokeWidth="0.7"/>
+        <text x="485" y="136" textAnchor="middle" fill="#C9F03E" fontSize="8.5" fontFamily="Geist Mono" fontWeight="600">TOP R</text>
+        <text x="485" y="147" textAnchor="middle" fill="rgba(201,240,62,0.4)" fontSize="7" fontFamily="Geist Mono">6× Y12</text>
+        <rect x="472" y="128" width="24" height="36" rx="3" fill="#1a1a1a" stroke="rgba(255,255,255,0.14)" strokeWidth="1"/>
+        {[0,1,2].map(i=>(
+          <rect key={i} x="475" y={131+i*9} width="18" height="7" rx="1" fill="#111" stroke="rgba(255,255,255,0.06)" strokeWidth="0.4"/>
+        ))}
+        <text x="484" y="175" textAnchor="middle" fill="var(--text-muted)" fontSize="7.5" fontFamily="Geist Mono">SUB R</text>
       </g>
-      {/* SUB L */}
-      <rect x="60" y="100" width="24" height="28" rx="3" fill="#1a1a1a" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
-      <text x="72" y="138" textAnchor="middle" fill="var(--text-muted)" fontSize="8" fontFamily="Geist Mono">SUB L</text>
-      {/* SUB R */}
-      <rect x="376" y="100" width="24" height="28" rx="3" fill="#1a1a1a" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
-      <text x="388" y="138" textAnchor="middle" fill="var(--text-muted)" fontSize="8" fontFamily="Geist Mono">SUB R</text>
-      {/* Monitors */}
-      {[170, 210, 250].map((x, i) => (
+
+      {/* Center cluster */}
+      <rect x="265" y="20" width="30" height="20" rx="2" fill="#1a1a1a" stroke="rgba(255,255,255,0.18)" strokeWidth="1"/>
+      {[0,1,2].map(i=><circle key={i} cx={272+i*6} cy="30" r="2.5" fill="rgba(255,255,255,0.25)"/>)}
+
+      {/* Monitors on stage */}
+      {[204,248,280,316,360].map((x,i)=>(
         <g key={i}>
-          <rect x={x} y="50" width="20" height="14" rx="2" fill="#1a1a1a" stroke="rgba(255,255,255,0.2)" strokeWidth="1"/>
-          <text x={x+10} y="74" textAnchor="middle" fill="var(--text-muted)" fontSize="7" fontFamily="Geist Mono">MON</text>
+          <rect x={x} y="64" width="20" height="14" rx="2" fill="#141414" stroke="rgba(255,255,255,0.15)" strokeWidth="0.8"/>
+          <circle cx={x+10} cy="71" r="2.5" fill="rgba(255,255,255,0.2)"/>
         </g>
       ))}
 
-      {/* Coverage lines */}
-      <line x1="72" y1="94" x2="145" y2="280" stroke="rgba(201,240,62,0.15)" strokeWidth="0.8"/>
-      <line x1="84" y1="52" x2="40" y2="280" stroke="rgba(201,240,62,0.08)" strokeWidth="0.8"/>
-      <line x1="388" y1="94" x2="315" y2="280" stroke="rgba(201,240,62,0.15)" strokeWidth="0.8"/>
-      <line x1="376" y1="52" x2="420" y2="280" stroke="rgba(201,240,62,0.08)" strokeWidth="0.8"/>
+      {/* Fill speakers wall */}
+      <rect x="28" y="186" width="12" height="32" rx="2" fill="#141414" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+      <text x="34" y="228" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="6.5" fontFamily="Geist Mono">FILL</text>
+      <rect x="520" y="186" width="12" height="32" rx="2" fill="#141414" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+      <text x="526" y="228" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="6.5" fontFamily="Geist Mono">FILL</text>
+
+      {/* Seating rows */}
+      {[0,1,2,3,4,5,6,7].map(i=>(
+        <ellipse key={i} cx="280" cy="280"
+          rx={55+i*27} ry={22+i*16}
+          fill="none" stroke="rgba(255,255,255,0.045)" strokeWidth="0.8"
+        />
+      ))}
+
+      {/* Balcony */}
+      <path d="M 40 240 Q 280 233 520 240" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="1.2" strokeDasharray="5 4"/>
+
+      {/* SPL labels */}
+      <text x="280" y="218" textAnchor="middle" fill="rgba(201,240,62,0.65)" fontSize="8" fontFamily="Geist Mono">105</text>
+      <text x="435" y="255" textAnchor="middle" fill="rgba(93,184,78,0.5)" fontSize="7.5" fontFamily="Geist Mono">98</text>
+      <text x="125" y="255" textAnchor="middle" fill="rgba(93,184,78,0.5)" fontSize="7.5" fontFamily="Geist Mono">98</text>
+      <text x="280" y="354" textAnchor="middle" fill="rgba(62,145,66,0.4)" fontSize="7" fontFamily="Geist Mono">90</text>
     </svg>
   );
 }
