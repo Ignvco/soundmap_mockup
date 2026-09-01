@@ -1,0 +1,10 @@
+{
+  "description": "Ensures text input matches exactly as pasted, providing precise content replication for users needing accurate text handling and verification.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

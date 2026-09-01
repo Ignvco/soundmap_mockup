@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap');
+@import 'tailwindcss';
+
+html,
+body,
+#root {
+  height: 100%;
+  background: #08090A;
+  color: #F5F5F5;
+  font-family: 'Geist', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  scrollbar-width: none;
+  box-sizing: border-box;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
+:root {
+  --bg: #08090A;
+  --bg-secondary: #0A0A0A;
+  --surface: #101010;
+  --elevated: #141414;
+  --text: #F5F5F5;
+  --text-secondary: #A0A0A0;
+  --text-muted: #666666;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --accent: #C9F03E;
+  --accent-dim: rgba(201, 240, 62, 0.12);
+  --accent-dim2: rgba(201, 240, 62, 0.06);
+  --radius: 6px;
+  --radius-sm: 4px;
+  --radius-lg: 10px;
+}
